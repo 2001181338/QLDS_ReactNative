@@ -12,7 +12,7 @@ export default function DatGhe({ navigation }) {
 
     const [danhSachGhe, setDanhSachGhe] = useState([]);
     const [message, setMessage] = useState("")
-    const [maGa, setMaGa] = useState(1);
+    const [maGa, setMaGa] = useState(2);
 
     const getDanhSachGhe = async () => {
         var model = {
@@ -20,10 +20,11 @@ export default function DatGhe({ navigation }) {
             "MaChuyenTau": 1
         }
         try {
-            fetch('https://10.0.2.1:44305/api/ga/get-all')
+            fetch(localHost +'/api/ga/get-all')
                 .then((response) => response.json())
                 .then((json) => {
-                    alert("Data")
+                    var ga = json.Data[0].MaGa;
+                    alert("Data: " + ga)
                     return json;
                 })
                 .catch((error) => {

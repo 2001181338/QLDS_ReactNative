@@ -1,20 +1,26 @@
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
 import { Text, View, Button, StyleSheet, ScrollView, TouchableOpacity, TouchableOpacityBase, TouchableWithoutFeedback } from "react-native";
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { localHost } from '../variable-contants/variable-contants';
+import { toaGheService } from '../services/ToaGheService';
 
 export default function ToaGhe() {
 
+    const [maChuyenTau, setMaChuyenTau] = useState(4)
     const [selected, setSelected] = useState(false)
     const [danhSachToa, setDanhSachToa] = useState([
         {
             "TenToa": "A",
             "IsSelected": false,
-            "LoaiToa": 1
+            "LoaiToa": 1,
+            "MaToa": 111
         },
         {
             "TenToa": "B",
             "IsSelected": false,
-            "LoaiToa": 1
+            "LoaiToa": 1,
+            "MaToa": 112
         },
         {
             "TenToa": "C",
@@ -52,214 +58,10 @@ export default function ToaGhe() {
             "LoaiToa": 2
         }
     ])
-    const [danhSachGhe1, setDanhSachGhe1] = useState([
-        {
-            "MaGhe": 1,
-            "TenGhe": "A1",
-            "DaDat": false,
-            "GiaVe": 150000,
-            "TenToa": "A",
-            "SoCho": "1",
-            "MaLoaiVe": 1
-        },
-        {
-            "MaGhe": 2,
-            "TenGhe": "A2",
-            "DaDat": true,
-            "GiaVe": 150000,
-            "TenToa": "A",
-            "SoCho": "2",
-            "MaLoaiVe": 1
-        },
-        {
-            "MaGhe": 3,
-            "TenGhe": "A3",
-            "DaDat": false,
-            "GiaVe": 150000,
-            "TenToa": "A",
-            "SoCho": "3",
-            "MaLoaiVe": 1
-        },
-        {
-            "MaGhe": 13,
-            "TenGhe": "A4",
-            "DaDat": false,
-            "GiaVe": 150000,
-            "TenToa": "A",
-            "SoCho": "4",
-            "MaLoaiVe": 1
-        },
-        {
-            "MaGhe": 14,
-            "TenGhe": "A5",
-            "DaDat": false,
-            "GiaVe": 150000,
-            "TenToa": "A",
-            "SoCho": "5",
-            "MaLoaiVe": 1
-        }, {
-            "MaGhe": 15,
-            "TenGhe": "A6",
-            "DaDat": false,
-            "GiaVe": 150000,
-            "TenToa": "A",
-            "SoCho": "6",
-            "MaLoaiVe": 1
-        }
-        , {
-            "MaGhe": 16,
-            "TenGhe": "A7",
-            "DaDat": false,
-            "GiaVe": 150000,
-            "TenToa": "A",
-            "SoCho": "7",
-            "MaLoaiVe": 1
-        }
-        , {
-            "MaGhe": 17,
-            "TenGhe": "A8",
-            "DaDat": false,
-            "GiaVe": 150000,
-            "TenToa": "A",
-            "SoCho": "8",
-            "MaLoaiVe": 1
-        },
-        , {
-            "MaGhe": 21,
-            "TenGhe": "A9",
-            "DaDat": false,
-            "GiaVe": 150000,
-            "TenToa": "A",
-            "SoCho": "9",
-            "MaLoaiVe": 1
-        },
-        , {
-            "MaGhe": 22,
-            "TenGhe": "A10",
-            "DaDat": false,
-            "GiaVe": 150000,
-            "TenToa": "A",
-            "SoCho": "10",
-            "MaLoaiVe": 1
-        },
-        , {
-            "MaGhe": 23,
-            "TenGhe": "A11",
-            "DaDat": false,
-            "GiaVe": 150000,
-            "TenToa": "A",
-            "SoCho": "11",
-            "MaLoaiVe": 1
-        },
-        , {
-            "MaGhe": 24,
-            "TenGhe": "A12",
-            "DaDat": false,
-            "GiaVe": 150000,
-            "TenToa": "A",
-            "SoCho": "12",
-            "MaLoaiVe": 1
-        },
-        , {
-            "MaGhe": 25,
-            "TenGhe": "A13",
-            "DaDat": false,
-            "GiaVe": 150000,
-            "TenToa": "A",
-            "SoCho": "13",
-            "MaLoaiVe": 1
-        }
-    ])
-
-    const [danhSachGhe2, setDanhSachGhe2] = useState([
-        {
-            "MaGhe": 4,
-            "TenGhe": "B1",
-            "DaDat": false,
-            "GiaVe": 150000,
-            "TenToa": "B",
-            "SoCho": "4",
-            "MaLoaiVe": 1
-        },
-        {
-            "MaGhe": 5,
-            "TenGhe": "B2",
-            "DaDat": false,
-            "GiaVe": 150000,
-            "TenToa": "B",
-            "SoCho": "2",
-            "MaLoaiVe": 1
-        },
-        {
-            "MaGhe": 6,
-            "TenGhe": "B3",
-            "DaDat": false,
-            "GiaVe": 150000,
-            "TenToa": "B",
-            "SoCho": "3",
-            "MaLoaiVe": 1
-        }
-    ])
-
-    const [danhSachGhe3, setDanhSachGhe3] = useState([
-        {
-            "MaGhe": 7,
-            "TenGhe": "C1",
-            "DaDat": false,
-            "GiaVe": 150000,
-            "TenToa": "C",
-            "SoCho": "1",
-            "MaLoaiVe": 1
-        },
-        {
-            "MaGhe": 8,
-            "TenGhe": "C2",
-            "DaDat": true,
-            "GiaVe": 150000,
-            "TenToa": "C",
-            "SoCho": "2",
-            "MaLoaiVe": 1
-        },
-        {
-            "MaGhe": 9,
-            "TenGhe": "C3",
-            "DaDat": false,
-            "GiaVe": 150000,
-            "TenToa": "C",
-            "SoCho": "3",
-            "MaLoaiVe": 1
-        }
-    ])
-
-    const [danhSachGhe4, setDanhSachGhe4] = useState([
-        {
-            "MaGhe": 10,
-            "TenGhe": "D1",
-            "DaDat": false,
-            "GiaVe": 150000,
-            "TenToa": "D",
-            "SoCho": "1",
-            "MaLoaiVe": 1
-        },
-        {
-            "MaGhe": 11,
-            "TenGhe": "D2",
-            "DaDat": true,
-            "GiaVe": 150000,
-            "TenToa": "D",
-            "SoCho": "2",
-            "MaLoaiVe": 1
-        },
-        {
-            "MaGhe": 12,
-            "TenGhe": "D3",
-            "DaDat": false,
-            "GiaVe": 150000,
-            "TenToa": "D",
-            "SoCho": "3",
-            "MaLoaiVe": 1
-        }
-    ])
+    const [gheDay0, setGheDay0] = useState([])
+    const [gheDay1, setGheDay1] = useState([])
+    const [gheDay2, setGheDay2] = useState([])
+    const [gheDay3, setGheDay3] = useState([])
 
     const [danhSachGheChon, setDanhSachGheChon] = useState([])
 
@@ -269,97 +71,32 @@ export default function ToaGhe() {
         var toaSelected = danhSachToaTemp.find(x => x.TenToa == toa.TenToa);
         if (!toa.IsSelected) {
             toaSelected.IsSelected = !toaSelected.IsSelected;
+
+            var model = {
+                "MaChuyenTau": maChuyenTau,
+                "MaToa": toa.MaToa
+            }
+         
+            toaGheService.getGheByToa(model).then(function (res) {
+                if(res.data.Status){
+                    setGheDay0(res.data.Data.GheDay0)
+                    setGheDay1(res.data.Data.GheDay1)
+                    setGheDay2(res.data.Data.GheDay2)
+                    setGheDay3(res.data.Data.GheDay3)
+                }
+                else{
+                    alert(res.data.Message)
+                }
+               
+            }).catch(function (error) {
+                alert("error: " + error);
+            })
             setDanhSachToa([...danhSachToaTemp])
         }
     }
 
-    const renderDsGheDay1 = () => {
-        return danhSachGhe1.map((ghe, index) => {
-            return (ghe.DaDat ?
-                (<TouchableOpacity key={index} style={styles.gheDaDat} disabled>
-                    <Text>
-                        {ghe.TenGhe}
-                    </Text>
-                </TouchableOpacity>)
-                : (danhSachGheChon.findIndex(x => x.MaGhe == ghe.MaGhe) != -1 ?
-                    (<TouchableOpacity key={index} style={styles.gheDaChon} onPress={() => {
-                        onSelecetedGhe(ghe)
-                    }}>
-                        <Text>
-                            {ghe.TenGhe}
-                        </Text>
-                    </TouchableOpacity>)
-                    :
-                    (<TouchableOpacity key={index} style={styles.gheChuaDat} onPress={() => {
-                        onSelecetedGhe(ghe)
-                    }}>
-                        <Text>
-                            {ghe.TenGhe}
-                        </Text>
-                    </TouchableOpacity>)
-                )
-            )
-        })
-    }
-
-    const renderDsGheDay2 = () => {
-        return danhSachGhe2.map((ghe, index) => {
-            return (ghe.DaDat ? (<TouchableOpacity key={index} style={styles.gheDaDat} disabled>
-                <Text>
-                    {ghe.TenGhe}
-                </Text>
-            </TouchableOpacity>)
-                : (danhSachGheChon.findIndex(x => x.MaGhe == ghe.MaGhe) != -1 ?
-                    (<TouchableOpacity key={index} style={styles.gheDaChon} onPress={() => {
-                        onSelecetedGhe(ghe)
-                    }}>
-                        <Text>
-                            {ghe.TenGhe}
-                        </Text>
-                    </TouchableOpacity>)
-                    :
-                    (<TouchableOpacity key={index} style={styles.gheChuaDat} onPress={() => {
-                        onSelecetedGhe(ghe)
-                    }}>
-                        <Text>
-                            {ghe.TenGhe}
-                        </Text>
-                    </TouchableOpacity>)
-                )
-            )
-        })
-    }
-
-    const renderDsGheDay3 = () => {
-        return danhSachGhe3.map((ghe, index) => {
-            return (ghe.DaDat ? (<TouchableOpacity key={index} style={styles.gheDaDat} disabled>
-                <Text>
-                    {ghe.TenGhe}
-                </Text>
-            </TouchableOpacity>)
-                : (danhSachGheChon.findIndex(x => x.MaGhe == ghe.MaGhe) != -1 ?
-                    (<TouchableOpacity key={index} style={styles.gheDaChon} onPress={() => {
-                        onSelecetedGhe(ghe)
-                    }}>
-                        <Text>
-                            {ghe.TenGhe}
-                        </Text>
-                    </TouchableOpacity>)
-                    :
-                    (<TouchableOpacity key={index} style={styles.gheChuaDat} onPress={() => {
-                        onSelecetedGhe(ghe)
-                    }}>
-                        <Text>
-                            {ghe.TenGhe}
-                        </Text>
-                    </TouchableOpacity>)
-                )
-            )
-        })
-    }
-
-    const renderDsGheDay4 = () => {
-        return danhSachGhe4.map((ghe, index) => {
+    const renderDsGheDay = (danhSachGhe) => {
+        return danhSachGhe.map((ghe, index) => {
             return (ghe.DaDat ? (<TouchableOpacity key={index} style={styles.gheDaDat} disabled>
                 <Text>
                     {ghe.TenGhe}
@@ -398,6 +135,17 @@ export default function ToaGhe() {
         setDanhSachGheChon([...danhSachGheChonTemp])
     }
 
+    const getDanhSachGheByToa = function (model) {
+        axios.post(localHost + '/api/toa/get-ghe-by-toa', model).then(function (res) {
+            alert("success")
+        }).catch(function (error) {
+            alert("error: " + error);
+        })
+    }
+
+    useEffect(() => {
+
+    }, [])
 
     return (
         <View>
@@ -475,24 +223,27 @@ export default function ToaGhe() {
                     <ScrollView style={styles.scrollDanhSachGhe}>
                         <View style={styles.divGhe}>
                             <View>
-                                {renderDsGheDay1()}
+                                {renderDsGheDay(gheDay0)}
                             </View>
                             <View>
-                                {renderDsGheDay2()}
+                                {renderDsGheDay(gheDay1)}
                             </View>
                             <View>
                             </View>
                             <View>
                             </View>
                             <View>
-                                {renderDsGheDay3()}
+                                {renderDsGheDay(gheDay2)}
                             </View>
                             <View>
-                                {renderDsGheDay4()}
+                                {renderDsGheDay(gheDay3)}
                             </View>
                         </View>
                     </ScrollView>
                 </View>
+            </View>
+            <View>
+                <Text>Ghe</Text>
             </View>
         </View>
     )

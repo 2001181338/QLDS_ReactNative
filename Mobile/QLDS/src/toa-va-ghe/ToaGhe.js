@@ -1,69 +1,25 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { Text, View, Button, StyleSheet, ScrollView, TouchableOpacity, TouchableOpacityBase, TouchableWithoutFeedback } from "react-native";
+import { Text, View, Button, StyleSheet, ScrollView, TouchableOpacity, TouchableOpacityBase, TouchableWithoutFeedback, FlatList } from "react-native";
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { localHost } from '../variable-contants/variable-contants';
 import { toaGheService } from '../services/ToaGheService';
 
-export default function ToaGhe() {
+export default function ToaGhe({ route }) {
 
-    const [maChuyenTau, setMaChuyenTau] = useState(4)
+    const [maChuyenTau, setMaChuyenTau] = useState(5)
     const [selected, setSelected] = useState(false)
-    const [danhSachToa, setDanhSachToa] = useState([
-        {
-            "TenToa": "A",
-            "IsSelected": false,
-            "LoaiToa": 1,
-            "MaToa": 111
-        },
-        {
-            "TenToa": "B",
-            "IsSelected": false,
-            "LoaiToa": 1,
-            "MaToa": 112
-        },
-        {
-            "TenToa": "C",
-            "IsSelected": false,
-            "LoaiToa": 1
-        },
-        {
-            "TenToa": "D",
-            "IsSelected": false,
-            "LoaiToa": 1
-        },
-        {
-            "TenToa": "F",
-            "IsSelected": false,
-            "LoaiToa": 2
-        },
-        {
-            "TenToa": "G",
-            "IsSelected": false,
-            "LoaiToa": 2
-        },
-        {
-            "TenToa": "H",
-            "IsSelected": false,
-            "LoaiToa": 2
-        },
-        {
-            "TenToa": "M",
-            "IsSelected": false,
-            "LoaiToa": 2
-        },
-        {
-            "TenToa": "L",
-            "IsSelected": false,
-            "LoaiToa": 2
-        }
-    ])
+    const [danhSachToa, setDanhSachToa] = useState([])
+    const [chuyenTau, setChuyenTau] = useState({})
     const [gheDay0, setGheDay0] = useState([])
     const [gheDay1, setGheDay1] = useState([])
     const [gheDay2, setGheDay2] = useState([])
     const [gheDay3, setGheDay3] = useState([])
+    const [tongTien, setTongTien] = useState(0)
 
     const [danhSachGheChon, setDanhSachGheChon] = useState([])
+
+    const { toas, chuyenTauTemp } = route.params;
 
     const selectedToa = (toa) => {
         var danhSachToaTemp = danhSachToa;
@@ -76,18 +32,20 @@ export default function ToaGhe() {
                 "MaChuyenTau": maChuyenTau,
                 "MaToa": toa.MaToa
             }
-         
+
+            // alert("model: " + model.MaChuyenTau)
+
             toaGheService.getGheByToa(model).then(function (res) {
-                if(res.data.Status){
+                if (res.data.Status) {
                     setGheDay0(res.data.Data.GheDay0)
                     setGheDay1(res.data.Data.GheDay1)
                     setGheDay2(res.data.Data.GheDay2)
                     setGheDay3(res.data.Data.GheDay3)
                 }
-                else{
+                else {
                     alert(res.data.Message)
                 }
-               
+
             }).catch(function (error) {
                 alert("error: " + error);
             })
@@ -130,8 +88,14 @@ export default function ToaGhe() {
             danhSachGheChonTemp = danhSachGheChonTemp.filter(x => x.MaGhe !== ghe.MaGhe);
         }
         else {
-            danhSachGheChon.push(ghe);
+            danhSachGheChonTemp.push(ghe);
         }
+
+        var tinhTongTien = 0;
+        danhSachGheChonTemp.forEach(ghe => {
+            tinhTongTien += ghe.GiaVe
+        })
+        setTongTien(tinhTongTien);
         setDanhSachGheChon([...danhSachGheChonTemp])
     }
 
@@ -143,21 +107,33 @@ export default function ToaGhe() {
         })
     }
 
-    useEffect(() => {
+    const renderDanhSachToa = () => {
+        return danhSachToa.map((item, index) => {
+            return (<TouchableOpacity onPress={() => {
+                selectedToa(item)
+            }} key={index} style={[item.IsSelected ? styles.toaSelected : (item.LoaiToa == 2 ? styles.toaNgoi : styles.toaNam)]}>
+                <Text>
+                    {item.TenToa}
+                </Text>
+            </TouchableOpacity>)
+        })
+    }
 
+    useEffect(() => {
+        setDanhSachToa(toas);
+        setChuyenTau(chuyenTauTemp);
     }, [])
 
+    const numberFormat = (value) => {
+        return value.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    }
+
     return (
-        <View>
+        <View style={styles.toaVaGhe}>
             <View style={styles.title}>
                 <FontAwesome5 name={'train'} style={styles.title_train} />
                 <Text style={styles.tenChuyen}>
-                    SGDA1
-                    |
-                    Sài Gòn - Đà Nẵng
-                    17:00
-                    -
-                    01/01/2021
+                    {chuyenTau.TenTau} | {chuyenTau.GaDi} - {chuyenTau.GaDen} {chuyenTau.GioKhoiHanh} - {chuyenTau.NgayKhoiHanh}
                 </Text>
             </View>
             <View style={styles.divKyHieuToa}>
@@ -202,15 +178,7 @@ export default function ToaGhe() {
                     </View>
                     <ScrollView style={styles.danhSachToa} showsVerticalScrollIndicator={false}>
                         {
-                            danhSachToa.map((item, index) => {
-                                return (<TouchableOpacity onPress={() => {
-                                    selectedToa(item)
-                                }} key={index} style={[item.IsSelected ? styles.toaSelected : (item.LoaiToa == 2 ? styles.toaNgoi : styles.toaNam)]}>
-                                    <Text>
-                                        {item.TenToa}
-                                    </Text>
-                                </TouchableOpacity>)
-                            })
+                            renderDanhSachToa()
                         }
                     </ScrollView>
                 </View>
@@ -242,15 +210,40 @@ export default function ToaGhe() {
                     </ScrollView>
                 </View>
             </View>
-            <View>
-                <Text>Ghe</Text>
+            <View style={styles.bottomDatVe}>
+                <View style={styles.tongGiaVe}>
+                    <View >
+                        <View>
+                            <Text>
+                                Vé ngồi: {chuyenTau.GiaVeNgoiStr} VNĐ
+                            </Text>
+                        </View>
+                        <View>
+                            <Text>
+                                Vé nằm: {chuyenTau.GiaVeNamStr} VNĐ
+                            </Text>
+                        </View>
+                    </View>
+
+                    <Text>Tổng tiền: {numberFormat(tongTien)} VNĐ </Text>
+                </View>
+                <TouchableOpacity style={styles.tiepTucDatVe}>
+                    <Text>
+                        Tiếp tục
+                    </Text>
+                </TouchableOpacity>
             </View>
+
         </View>
     )
 }
 
 
 const styles = StyleSheet.create({
+    toaVaGhe: {
+        position: "relative",
+        height: "100%"
+    },
     title: {
         padding: 7,
         backgroundColor: "#066eab",
@@ -269,7 +262,8 @@ const styles = StyleSheet.create({
     },
     toaGhe: {
         flexDirection: "row",
-        padding: 5
+        padding: 5,
+        marginBottom: 280
     },
     toa_tenToa: {
         flexDirection: "row",
@@ -339,7 +333,7 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
     danhSachToa: {
-        marginBottom: 360
+        marginBottom: 0
     },
     divGhe: {
         padding: 10,
@@ -402,7 +396,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#000"
     },
     scrollDanhSachGhe: {
-        marginBottom: 360
+        marginBottom: 0
     },
     divKyHieu: {
         paddingHorizontal: 10,
@@ -466,4 +460,28 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         marginRight: 5
     },
+    bottomDatVe: {
+        position: "absolute",
+        height: 100,
+        width: "100%",
+        bottom: 0,
+        left: 0,
+    },
+    tongGiaVe: {
+        backgroundColor: "#f6f6f6",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: 13,
+        borderColor: "#c1c1c1",
+        borderWidth: 1,
+        height: 60
+    },
+    tiepTucDatVe: {
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: "#9ed2ff",
+        justifyContent: "center",
+        height: 40
+    }
 })

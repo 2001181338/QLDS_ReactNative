@@ -5,7 +5,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import QuanLyThongTin from '../quan-ly-thong-tin/quan-ly-thong-tin';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import QuanLyDatVe from '../dat-ve/quan-ly-dat-ve';
-import DatGhe from '../dat-ghe/chuyentau';
 import ToaGhe from '../toa-va-ghe/ToaGhe';
 
 const Tab = createBottomTabNavigator();
@@ -22,7 +21,7 @@ export default function TabNavigation() {
                     backgroundColor: '#0a70c9'
                 }
             }}>
-            <Tab.Screen name="Đặt vé" component={DatGhe}
+            <Tab.Screen name="Đặt vé" component={QuanLyDatVe}
                 options={{
                     tabBarIcon: () => (
                         <FontAwesome5 name={'train'} style={{ color: '#fff' }} size={20} />

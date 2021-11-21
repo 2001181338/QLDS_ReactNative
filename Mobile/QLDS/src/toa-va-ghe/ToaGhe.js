@@ -1,14 +1,11 @@
-import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { Text, View, Button, StyleSheet, ScrollView, TouchableOpacity, TouchableOpacityBase, TouchableWithoutFeedback, FlatList } from "react-native";
+import { Text, View, Button, StyleSheet, ScrollView, TouchableOpacity, TouchableOpacityBase, TouchableWithoutFeedback, FlatList, Alert } from "react-native";
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { localHost } from '../variable-contants/variable-contants';
 import { toaGheService } from '../services/ToaGheService';
 
-export default function ToaGhe({ route }) {
+export default function ToaGhe({ navigation, route }) {
 
-    const [maChuyenTau, setMaChuyenTau] = useState(5)
-    const [selected, setSelected] = useState(false)
     const [danhSachToa, setDanhSachToa] = useState([])
     const [chuyenTau, setChuyenTau] = useState({})
     const [gheDay0, setGheDay0] = useState([])
@@ -29,7 +26,7 @@ export default function ToaGhe({ route }) {
             toaSelected.IsSelected = !toaSelected.IsSelected;
 
             var model = {
-                "MaChuyenTau": maChuyenTau,
+                "MaChuyenTau": chuyenTau.MaChuyenTau,
                 "MaToa": toa.MaToa
             }
 
@@ -99,14 +96,6 @@ export default function ToaGhe({ route }) {
         setDanhSachGheChon([...danhSachGheChonTemp])
     }
 
-    const getDanhSachGheByToa = function (model) {
-        axios.post(localHost + '/api/toa/get-ghe-by-toa', model).then(function (res) {
-            alert("success")
-        }).catch(function (error) {
-            alert("error: " + error);
-        })
-    }
-
     const renderDanhSachToa = () => {
         return danhSachToa.map((item, index) => {
             return (<TouchableOpacity onPress={() => {
@@ -126,6 +115,16 @@ export default function ToaGhe({ route }) {
 
     const numberFormat = (value) => {
         return value.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    }
+
+    const onTiepTucDatVe = () => {
+        if (danhSachGheChon.length <= 0) {
+            Alert.alert("Thông báo", "Vui lòng chọn ghế cần đặt");
+            return;
+        }
+
+        navigation.navigate("Nhập thông tin hành khách", { danhSachGheChon });
+
     }
 
     return (
@@ -227,7 +226,9 @@ export default function ToaGhe({ route }) {
 
                     <Text>Tổng tiền: {numberFormat(tongTien)} VNĐ </Text>
                 </View>
-                <TouchableOpacity style={styles.tiepTucDatVe}>
+                <TouchableOpacity style={styles.tiepTucDatVe} onPress={() => {
+                    onTiepTucDatVe()
+                }}>
                     <Text>
                         Tiếp tục
                     </Text>

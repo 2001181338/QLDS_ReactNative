@@ -9,7 +9,8 @@ export default function ChuyenTau({ navigation, route }) {
     const chonChuyenTau = (chuyenTau) => {
         var toas = chuyenTau.Toas;
         var chuyenTauTemp = chuyenTau;
-        navigation.navigate("ToaGhe", { toas, chuyenTauTemp })
+        // alert(chuyenTauTemp.MaChuyenTau)
+        navigation.navigate("Toa và ghế", { toas, chuyenTauTemp })
     }
 
     const { chuyenTaus } = route.params;

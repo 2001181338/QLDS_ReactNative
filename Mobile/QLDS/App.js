@@ -7,6 +7,7 @@ import ChonGa from './src/dat-ve/chon-ga';
 import ChonGaDi from './src/dat-ve/chon-ga-di';
 import ChuyenTau from './src/chuyen-tau/chuyentau';
 import ToaGhe from './src/toa-va-ghe/ToaGhe';
+import NhapThongTinHanhKhach from './src/nhap-thong-tin-hanh-khach/nhap-thong-tin-hanh-khach';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,10 +21,11 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen name="QuanLyDatVe" component={QuanLyDatVe} />
-        <Stack.Screen name="ChonGa" component={ChonGa} />
+        <Stack.Screen name="Chọn ga" component={ChonGa} />
         <Stack.Screen name="ChonGaDi" component={ChonGaDi} />
-        <Stack.Screen name="ChuyenTau" component={ChuyenTau} />
-        <Stack.Screen name="ToaGhe" component={ToaGhe} />
+        <Stack.Screen name="Danh sách chuyến tàu" component={ChuyenTau} />
+        <Stack.Screen name="Toa và ghế" component={ToaGhe}/>
+        <Stack.Screen name="Nhập thông tin hành khách" component={NhapThongTinHanhKhach}/>
       </Stack.Navigator>
     </NavigationContainer>
 

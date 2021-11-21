@@ -38,7 +38,7 @@ export default function QuanLyDatVe({ navigation }) {
     }
 
     const onReDirect = (isGaDiParent) => {
-        navigation.navigate('ChonGa', { onChonGaParent, gaDiParent, gaDenParent, isGaDiParent })
+        navigation.navigate('Chọn ga', { onChonGaParent, gaDiParent, gaDenParent, isGaDiParent })
     }
 
     const onTimChuyenTau = () => {
@@ -55,7 +55,7 @@ export default function QuanLyDatVe({ navigation }) {
         timChuyenTauService.onTimChuyenTau(model).then(function (res) {
             if (res.data.Status) {
                 var chuyenTaus = res.data.Data;
-                navigation.navigate('ChuyenTau', { chuyenTaus })
+                navigation.navigate('Danh sách chuyến tàu', { chuyenTaus })
             }
             else {
                 Alert.alert("Thông báo", res.data.Message)

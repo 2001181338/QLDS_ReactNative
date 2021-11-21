@@ -6,6 +6,8 @@ import QuanLyThongTin from '../quan-ly-thong-tin/quan-ly-thong-tin';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import QuanLyDatVe from '../dat-ve/quan-ly-dat-ve';
 import ToaGhe from '../toa-va-ghe/ToaGhe';
+import NhapThongTinHanhKhach from './../nhap-thong-tin-hanh-khach/nhap-thong-tin-hanh-khach';
+import TabViewExample from './../tab-test/TabViewExample';
 
 const Tab = createBottomTabNavigator();
 
@@ -34,7 +36,7 @@ export default function TabNavigation() {
                     headerTintColor: '#ffffff',
                     tabBarInactiveTintColor: "#afafaf"
                 }} />
-            <Tab.Screen name="Toa ghế" component={ToaGhe}
+            <Tab.Screen name="Toa ghế" component={NhapThongTinHanhKhach}
                 options={{
                     tabBarIcon: () => (
                         <FontAwesome5 name={'train'} style={{ color: '#fff' }} size={20} />
@@ -47,7 +49,7 @@ export default function TabNavigation() {
                     headerTintColor: '#ffffff',
                     tabBarInactiveTintColor: "#afafaf"
                 }} />
-            <Tab.Screen name="QuanLyThongtin" component={QuanLyThongTin}
+            <Tab.Screen name="QuanLyThongtin" component={TabViewExample}
                 options={{
                     tabBarIcon: () => (
                         <FontAwesome5 name={'ticket-alt'} style={{ color: '#fff' }} size={20} />

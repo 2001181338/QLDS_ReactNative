@@ -141,7 +141,7 @@ var search = StyleSheet.create({
         height: 300
     },  
     wpDatVeTau: {
-        backgroundColor: '#dcdde1', height: '100%'
+        backgroundColor: '#fff', height: '100%'
     },
     imageBg: {
         width: '100%',

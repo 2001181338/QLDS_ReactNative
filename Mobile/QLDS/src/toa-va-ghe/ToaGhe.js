@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Button, StyleSheet, ScrollView, TouchableOpacity, TouchableOpacityBase, TouchableWithoutFeedback, FlatList, Alert } from "react-native";
+import { Text, View, Button, StyleSheet, ScrollView, TouchableOpacity, TouchableOpacityBase, TouchableWithoutFeedback, FlatList, Alert, LogBox } from "react-native";
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { localHost } from '../variable-contants/variable-contants';
 import { toaGheService } from '../services/ToaGheService';
 
 export default function ToaGhe({ navigation, route }) {
-
+    LogBox.ignoreLogs([
+        'Non-serializable values were found in the navigation state',
+    ]);
     const [danhSachToa, setDanhSachToa] = useState([])
     const [chuyenTau, setChuyenTau] = useState({})
     const [gheDay0, setGheDay0] = useState([])
@@ -15,6 +17,7 @@ export default function ToaGhe({ navigation, route }) {
     const [tongTien, setTongTien] = useState(0)
 
     const [danhSachGheChon, setDanhSachGheChon] = useState([])
+    const [isThanhCong, setIsThanhCong] = useState(false);
 
     const { toas, chuyenTauTemp } = route.params;
 
@@ -123,8 +126,40 @@ export default function ToaGhe({ navigation, route }) {
             return;
         }
 
-        navigation.navigate("Nhập thông tin hành khách", { danhSachGheChon });
+        navigation.navigate("Nhập thông tin hành khách", { danhSachGheChon, chuyenTau, onDatVeThanhCong });
+    }
 
+    const onDatVeThanhCong = (isDone) => {
+        if (isDone) {
+            gheDay0.forEach(ghe => {
+                if (danhSachGheChon.findIndex(x => x.MaGhe == ghe.MaGhe) != -1) {
+                    ghe.DaDat = true;
+                }
+            });
+            gheDay1.forEach(ghe => {
+                if (danhSachGheChon.findIndex(x => x.MaGhe == ghe.MaGhe) != -1) {
+                    ghe.DaDat = true;
+                }
+            });
+            gheDay2.forEach(ghe => {
+                if (danhSachGheChon.findIndex(x => x.MaGhe == ghe.MaGhe) != -1) {
+                    ghe.DaDat = true;
+                }
+            });
+            gheDay3.forEach(ghe => {
+                if (danhSachGheChon.findIndex(x => x.MaGhe == ghe.MaGhe) != -1) {
+                    ghe.DaDat = true;
+                }
+            });
+
+            setGheDay0([...gheDay0])
+            setGheDay0([...gheDay1])
+            setGheDay0([...gheDay2])
+            setGheDay0([...gheDay3])
+
+            setDanhSachGheChon([]);
+            setTongTien(0);
+        }
     }
 
     return (

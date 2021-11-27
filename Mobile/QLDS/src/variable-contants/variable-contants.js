@@ -1,1 +1,1 @@
-export const localHost = "http://dd1d-42-117-110-159.ngrok.io"
+export const localHost = "http://ad2a-2402-800-63a9-ff68-5d05-b038-7fb0-f97e.ngrok.io"

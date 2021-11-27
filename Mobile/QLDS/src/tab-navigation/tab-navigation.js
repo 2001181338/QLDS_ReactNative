@@ -8,6 +8,10 @@ import QuanLyDatVe from '../dat-ve/quan-ly-dat-ve';
 import ToaGhe from '../toa-va-ghe/ToaGhe';
 import NhapThongTinHanhKhach from './../nhap-thong-tin-hanh-khach/nhap-thong-tin-hanh-khach';
 import TabViewExample from './../tab-test/TabViewExample';
+import ThongTinKhach from '../thong-tin-khach/thong-tin-khach';
+import NganHang from '../ngan-hang/ngan-hang';
+import TimKiemThongTinVe from '../tim-ve/tim-kiem-thong-tin-ve';
+import QuanLyDonVe from '../quan-ly-don-ve/quan-ly-don-ve';
 
 const Tab = createBottomTabNavigator();
 
@@ -36,26 +40,26 @@ export default function TabNavigation() {
                     headerTintColor: '#ffffff',
                     tabBarInactiveTintColor: "#afafaf"
                 }} />
-            <Tab.Screen name="Toa ghế" component={NhapThongTinHanhKhach}
+            <Tab.Screen name="Quản lý đơn vé" component={QuanLyDonVe} 
                 options={{
                     tabBarIcon: () => (
-                        <FontAwesome5 name={'train'} style={{ color: '#fff' }} size={20} />
+                        <FontAwesome5 name={'ticket-alt'} style={{ color: '#fff' }} size={20} />
                     ),
                     headerTitleAllowFontScaling: true,
-                    tabBarLabel: "Toa ghế",
+                    tabBarLabel: "Quản lý đơn vé",
                     headerStyle: {
                         backgroundColor: '#40a9e7'
                     },
                     headerTintColor: '#ffffff',
                     tabBarInactiveTintColor: "#afafaf"
                 }} />
-            <Tab.Screen name="QuanLyThongtin" component={TabViewExample}
+            <Tab.Screen name="Tìm vé" component={TimKiemThongTinVe}
                 options={{
                     tabBarIcon: () => (
-                        <FontAwesome5 name={'ticket-alt'} style={{ color: '#fff' }} size={20} />
+                        <FontAwesome5 name={'search'} style={{ color: '#fff' }} size={20} />
                     ),
                     headerTitleAllowFontScaling: true,
-                    tabBarLabel: "Đơn mua vé",
+                    tabBarLabel: "Tìm vé",
                     headerStyle: {
                         backgroundColor: '#40a9e7'
                     },

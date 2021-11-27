@@ -1,24 +1,35 @@
-import React, { useState } from "react";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
 import { Text, View, StyleSheet, ScrollView } from "react-native";
+import { Button } from "react-native-elements";
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-export default function ThongTinVe({ navigation }) {
+export default function ThongTinVe({ navigation, route }) {
 
 
-    const [veTimDuoc, setVeTimDuoc] = useState({
-        "GaDi" : "Sài Gòn",
-        "GaDen" : "Dĩ An",
-        "NgayKhoiHanh" : "20/11/2021",
-        "GioKhoiHanh" : "7:00",
-        "HoTen" : "Phạm Mỹ Kha",
-        "CMND" : "272845512",
-        "TenTau" : "SGDA1",
-        "TenToa" : "01",
-        "TenGhe" : "001",
-        "LoaiVe" : "Giường nằm",
-        "GiaVe" : 120000,
-        "TrangThaiVe" : "Đã thanh toán"
-    });
+    const [veTimDuoc, setVeTimDuoc] = useState({});
+
+    const { veTimDuocTemp } = route.params;
+
+    const numberFormat = (value) => {
+        return value.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    }
+
+    useEffect(() => {
+        setVeTimDuoc(veTimDuocTemp)
+    }, [])
+
+    const onChangeTrangThai = (trangThai) => {
+        veTimDuoc.TrangThaiVe = trangThai;
+        setVeTimDuoc({ ...veTimDuoc })
+    }
+
+    const onThanhToanTrucTuyen = (isThanhToan) => {
+        var maVe = veTimDuocTemp.SoVe;
+        var cmndTemp = veTimDuoc.CMND;
+        navigation.navigate("Thanh toán trực tuyến", { maVe, isThanhToan, onChangeTrangThai, cmndTemp });
+    }
+
 
 
     return (
@@ -26,8 +37,8 @@ export default function ThongTinVe({ navigation }) {
             <View style={styles.wp_ThongTinVe}>
                 <View style={styles.wp_TuyenDuong}>
                     <Text style={styles.textTuyenDuong}>{veTimDuoc.GaDi} </Text>
-                    <FontAwesome5 name={'long-arrow-alt-right'} style={{ color: '#0652DD' }} size={20} />
-                    <Text style={styles.textTuyenDuong}> {veTimDuoc.GaDen} - {veTimDuoc.NgayKhoiHanh} - {veTimDuoc.GioKhoiHanh}</Text>
+                    <FontAwesome5 name={'long-arrow-alt-right'} style={{ color: '#fff' }} size={20} />
+                    <Text style={styles.textTuyenDuong}> {veTimDuoc.GaDen} - {moment(veTimDuoc.NgayKhoiHanh).format("DD/MM/yyyy")} - {veTimDuoc.GioKhoiHanh}</Text>
                 </View>
                 <View style={styles.dongThongTinVe}>
                     <View style={styles.cotThongTinTrai}>
@@ -40,45 +51,45 @@ export default function ThongTinVe({ navigation }) {
                     </View>
                     <View style={styles.cotThongTinPhai}>
                         <View style={styles.flexEnd}>
-                            <Text style={styles.textLabelPhai}>CMND/CCCD</Text>
+                            <Text style={styles.textLabelPhai}>Tên tàu</Text>
+                        </View>
+                        <View style={styles.textRight}>
+                            <Text style={styles.textBinding}>{veTimDuoc.TenTau}</Text>
+                        </View>
+                    </View>
+                </View>
+                <View style={styles.dongThongTinVe}>
+                    <View style={styles.cotThongTinTrai}>
+                        <View>
+                            <Text style={styles.textLabelTrai}>CMND / CCCD</Text>
                         </View>
                         <View style={styles.plr_10}>
                             <Text style={styles.textBinding}>{veTimDuoc.CMND}</Text>
                         </View>
                     </View>
-                </View>
-                <View style={styles.dongThongTinVe}>
-                    <View style={styles.cotThongTinTrai}>
-                        <View>
-                            <Text style={styles.textLabelTrai}>Tên tàu</Text>
-                        </View>
-                        <View style={styles.plr_10}>
-                            <Text style={styles.textBinding}>{veTimDuoc.TenTau}</Text>
-                        </View>
-                    </View>
                     <View style={styles.cotThongTinPhai}>
                         <View style={styles.flexEnd}>
-                            <Text style={styles.textLabelPhai}>Tên toa</Text>
+                            <Text style={styles.textLabelPhai}>Thông tin ghế</Text>
                         </View>
-                        <View style={styles.plr_10}>
-                            <Text style={styles.textBinding}>Toa: {veTimDuoc.TenToa}</Text>
+                        <View style={styles.textRight}>
+                            <Text style={styles.textBinding}>{veTimDuoc.TenGhe}</Text>
                         </View>
                     </View>
                 </View>
                 <View style={styles.dongThongTinVe}>
                     <View style={styles.cotThongTinTrai}>
                         <View>
-                            <Text style={styles.textLabelTrai}>Thông tin chỗ</Text>
+                            <Text style={styles.textLabelTrai}>Số điện thoại</Text>
                         </View>
                         <View style={styles.plr_10}>
-                            <Text style={styles.textBinding}>Chỗ số: {veTimDuoc.TenGhe}</Text>
+                            <Text style={styles.textBinding}>{veTimDuoc.SoDT}</Text>
                         </View>
                     </View>
                     <View style={styles.cotThongTinPhai}>
                         <View style={styles.flexEnd}>
                             <Text style={styles.textLabelPhai}>Loại chỗ</Text>
                         </View>
-                        <View style={styles.plr_10}>
+                        <View style={styles.textRight}>
                             <Text style={styles.textBinding}>{veTimDuoc.LoaiVe}</Text>
                         </View>
                     </View>
@@ -89,15 +100,26 @@ export default function ThongTinVe({ navigation }) {
                             <Text style={styles.textLabelTrai}>Thành tiền</Text>
                         </View>
                         <View style={styles.plr_10}>
-                            <Text style={styles.textBinding}>{veTimDuoc.GiaVe} VNĐ</Text>
+                            <Text style={styles.textBinding}>{veTimDuoc.GiaVe ? numberFormat(veTimDuoc.GiaVe) : 0} VNĐ</Text>
                         </View>
                     </View>
                     <View style={styles.cotThongTinPhai}>
                         <View style={styles.flexEnd}>
                             <Text style={styles.textLabelPhai}>Trạng thái vé</Text>
                         </View>
-                        <View style={styles.plr_10}>
-                            <Text style={styles.textBinding}>{veTimDuoc.TrangThaiVe}</Text>
+                        <View style={styles.textRight}>
+                            <View style={styles.textBinding}>
+                                {veTimDuoc.TrangThaiVe == 1 ? <Button onPress={() => {
+                                    onThanhToanTrucTuyen(false)
+                                }} title="Trả vé" />
+                                    : (veTimDuoc.TrangThaiVe == 2 ? <Button onPress={() => {
+                                        onThanhToanTrucTuyen(true)
+                                    }} buttonStyle={{
+                                        backgroundColor: "#30a755"
+                                    }} title="Thanh toán" />
+                                        : (veTimDuoc.TrangThaiVe == 3 ? <Text style={{ color: "#ff0d0d" }}>Đã hủy</Text>
+                                            : <Text style={{ color: "#30a755" }}>Đã hoàn thành</Text>))
+                                }</View>
                         </View>
                     </View>
                 </View>
@@ -121,7 +143,7 @@ export default function ThongTinVe({ navigation }) {
 
 var styles = StyleSheet.create({
     wrapper: {
-        backgroundColor: '#dcdde1',
+        backgroundColor: '#fff',
         height: '100%'
     },
     wp_ThongTinVe: {
@@ -137,18 +159,18 @@ var styles = StyleSheet.create({
         flexDirection: "row",
         borderTopWidth: 2,
         borderBottomWidth: 2,
-        borderColor: '#b2bec3',
-        backgroundColor: '#63cdda',
+        borderColor: '#f66',
+        backgroundColor: '#f66',
         padding: 10
     },
     textTuyenDuong: {
         fontWeight: 'bold',
-        color: '#0652DD',
-        fontSize: 16
+        color: '#fff',
+        fontSize: 15
     },
     plr_10: {
         paddingLeft: 10,
-        paddingRight: 10
+        paddingRight: 10,
     },
     wp_QuyDinh: {
         margin: 10,
@@ -157,14 +179,15 @@ var styles = StyleSheet.create({
         borderRadius: 6
     },
     headingQuyDinh: {
-        backgroundColor: '#dd5600',
+        backgroundColor: '#f66',
         padding: 10,
-        borderBottomWidth: 2,
-        borderColor: '#b2bec3'
+        borderBottomWidth: 1,
+        borderColor: '#f66',
     },
     textHeadingQuyDinh: {
         color: '#fff',
-        fontSize: 16
+        fontSize: 15,
+        fontWeight: "bold"
     },
     contentQuyDinh: {
         padding: 10,
@@ -200,7 +223,7 @@ var styles = StyleSheet.create({
     textLabelPhai: {
         paddingTop: 5,
         paddingRight: 10,
-        color: "#8395a7"
+        color: "#8395a7",
     },
     textBinding: {
         paddingTop: 10,
@@ -212,4 +235,12 @@ var styles = StyleSheet.create({
     flexEnd: {
         alignItems: 'flex-end'
     },
+    textRight: {
+        alignItems: "flex-end",
+        marginHorizontal: 10
+    },
+    btnThanhToan: {
+        marginTop: 10,
+        paddingHorizontal: 10
+    }
 });

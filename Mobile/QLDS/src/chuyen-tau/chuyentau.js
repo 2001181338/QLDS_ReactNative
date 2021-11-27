@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import {Text, View, StyleSheet, TouchableOpacity, ScrollView, Button } from "react-native";
+import {Text, View, StyleSheet, TouchableOpacity, ScrollView, Button, LogBox } from "react-native";
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 export default function ChuyenTau({ navigation, route }) {
-
+    LogBox.ignoreLogs([
+        'Non-serializable values were found in the navigation state',
+    ]);
     const [danhSachChuyenTau, setDanhSachChuyentau] = useState([])
 
     const chonChuyenTau = (chuyenTau) => {

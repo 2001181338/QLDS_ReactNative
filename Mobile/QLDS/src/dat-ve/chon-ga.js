@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet, TextInput, ScrollView, TouchableOpacityBase, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet, TextInput, ScrollView, TouchableOpacityBase, TouchableOpacity, LogBox } from "react-native";
 import { gaService } from "../services/GaService";
 
 
 
 export default function ChonGaDi({ navigation, route }) {
+
+    LogBox.ignoreLogs([
+        'Non-serializable values were found in the navigation state',
+    ]);
 
     const [danhSachGa, setdanhSachGa] = useState([]);
     const [gaDi, setGaDi] = useState({})

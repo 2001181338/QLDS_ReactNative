@@ -35,7 +35,7 @@ export default function App() {
         <Stack.Screen name="Nhập thông tin khách" component={ThongTinKhach} />
         <Stack.Screen name="Thông tin ngân hàng" component={NganHang} />
         <Stack.Screen name="Thông tin vé" component={ThongTinVe} />
-        <Stack.Screen name="Thanh toán trực tuyến" component={ThanhToan} />
+        <Stack.Screen name="Giao dịch trực tuyến" component={ThanhToan} />
         <Stack.Screen name="Tab tất cả vé" component={TabTatCaVe} />
         <Stack.Screen
           name="Quản lý đơn vé"

@@ -53,7 +53,7 @@ export default function QuanLyDonVe({ navigation }) {
     const onRedirect = (ve, isThanhToan) => {
         var maVe = ve.SoVe;
         var cmndTemp = ve.CMND;
-        navigation.navigate("Thanh toán trực tuyến", { maVe, isThanhToan, onChangeTrangThai, cmndTemp, ve });
+        navigation.navigate("Giao dịch trực tuyến", { maVe, isThanhToan, onChangeTrangThai, cmndTemp, ve });
     }
 
     const onChangeTrangThai = (trangThai, ve) => {

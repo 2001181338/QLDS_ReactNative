@@ -27,7 +27,7 @@ export default function ThongTinVe({ navigation, route }) {
     const onThanhToanTrucTuyen = (isThanhToan) => {
         var maVe = veTimDuocTemp.SoVe;
         var cmndTemp = veTimDuoc.CMND;
-        navigation.navigate("Thanh toán trực tuyến", { maVe, isThanhToan, onChangeTrangThai, cmndTemp });
+        navigation.navigate("Giao dịch trực tuyến", { maVe, isThanhToan, onChangeTrangThai, cmndTemp });
     }
 
 
